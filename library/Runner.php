@@ -7,13 +7,39 @@ Runner_Autoloader::register();
 class Runner extends Runner_Options {
 
 	protected $_siteHost;
-	protected $_options = array(
+        /**
+         *
+         * @var Runner_Planner
+         */
+        protected $_planner;
+        protected $_crawler;
+        protected $_parser;
+        protected $_options = array(
 		'siteUrl' => ''
 	);
 
 	public function __construct(array $options = array()) {
 		parent::__construct($options);
+                $this->_crawler = new Runner_Crawler(new Runner_Crawler_Adapter_Fgc());
+                $this->_parser = new Runner_Parser(new Runner_Parser_Adapter_Xpath());
+                $this->_planner = new Runner_Planner($this);
 	}
+
+        public function run(){
+            while($this->_planner->plannerQueueSize() > 0) {
+                $currenUrl = $this->_planner->getNext();
+                $data = $this->_crawler->getAdapter()->getHtmlData($currenUrl);
+                $urls = $this->_parser->getAdapter()->getUrls($data);
+                foreach($urls as $url){
+                    $this->_planner->addUrl($url);
+                }
+                $this->_planner->moveToProcessed($currenUrl);
+                echo "Planner Queue Size " . $this->_planner->plannerQueueSize() . "\n";
+                echo "Processed ListSize Size " . $this->_planner->processedListSize() . "\n";
+                die();
+            }
+
+        }
 
 	public function getSiteHostName() {
 		if (!$this->_siteHost) {
@@ -30,4 +56,7 @@ class Runner extends Runner_Options {
 		return $url;
 	}
 
+
+
+    
 }
