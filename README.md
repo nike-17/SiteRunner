@@ -43,3 +43,10 @@ Possible improvement
 ------------- 
  * add filter layer to filter bad urls(bad http status, etc)
  * get content hash to check content quality   
+
+
+TODO
+-------------
+* Implements plugins support as git submodules
+* Move Queue to some external storage(ZeroMQ, Redis, Memcached)  
+* Add we processing hucks 
