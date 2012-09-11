@@ -36,7 +36,7 @@ class Runner extends Runner_Options {
                 $this->_planner->moveToProcessed($currenUrl);
                 echo "Planner Queue Size " . $this->_planner->plannerQueueSize() . "\n";
                 echo "Processed ListSize Size " . $this->_planner->processedListSize() . "\n";
-                die();
+
             }
 
         }
@@ -53,7 +53,7 @@ class Runner extends Runner_Options {
 		if (!isset($parsed_url['host'])) {
 			throw new Runner_Exception_Runner("Invalid site url {$url}");
 		}
-		return $url;
+		return $parsed_url['host'];
 	}
 
 

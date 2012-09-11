@@ -13,7 +13,8 @@ class Runner_Parser_Adapter_Xpath implements Runner_Parser_Adapter_Interface {
             $url  =  $e->nodeValue;
             $urls[]  = $url;
         }
-        return $urls;
+		
+        return array_unique($urls);
     }
 
 }
